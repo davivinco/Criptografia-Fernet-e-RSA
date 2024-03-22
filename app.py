@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -19,6 +19,10 @@ private_key = rsa.generate_private_key(
 public_key = private_key.public_key()
 
 app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/dns_lookup', methods=['GET'])
 def dns_lookup():
@@ -44,4 +48,6 @@ def decrypt():
     return {'decrypted_message': decrypted_message.decode()}
 
 if __name__ == '__main__':
-    app.run(debug=True)
+      app.run(debug=True, host='node175700-scriptcriptografia.jelastic.saveincloud.net', port=15543)
+
+

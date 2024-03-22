@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypter e Decrypter - Davi Vinco</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            width: 400px;
+            padding: 30px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        button {
+            width: calc(100% - 20px);
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            padding: 20px;
+            border: 2px solid #007bff;
+            border-radius: 6px;
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            word-wrap: break-word; /* Adiciona quebra de palavra */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>RSA Encrypter & Decrypter </h1>
+
+    <form id="encrypt-form">
+        <label for="message">Mensagem:</label>
+        <input type="text" id="message" name="message" placeholder="Digite sua mensagem...">
+        <button type="submit">Criptografar</button>
+    </form>
+
+    <div id="encryption-result" class="result"></div>
+
+    <form id="decrypt-form">
+        <label for="encrypted_message">Mensagem Criptografada:</label>
+        <input type="text" id="encrypted_message" name="encrypted_message" placeholder="Digite sua mensagem criptografada...">
+        <button type="submit">Descriptografar</button>
+    </form>
+
+    <div id="decryption-result" class="result"></div>
+  <h3> Made by Davi Vinco 😁 </h3>
+</div>
+
+  
+<script>
+    document.getElementById('encrypt-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const message = document.getElementById('message').value;
+        const response = await fetch('/encrypt', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        });
+        const data = await response.json();
+        document.getElementById('encryption-result').innerText = data.encrypted_message;
+    });
+
+    document.getElementById('decrypt-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const encrypted_message = document.getElementById('encrypted_message').value;
+        const response = await fetch('/decrypt', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ encrypted_message })
+        });
+        const data = await response.json();
+        document.getElementById('decryption-result').innerText = data.decrypted_message;
+    });
+</script>
+
+</body>
+</html>
+
